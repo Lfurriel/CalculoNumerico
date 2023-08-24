@@ -1,6 +1,6 @@
-A = [[1, 1, 1], [2, 1, -1], [1, 2, 3]]
-b = [3, 2, 6]
-
+A = [[1, 1, 1], [-3.5, 2, 1], [1.5, 2, -1]]
+b = [1, 0, 0]
+x = []
 k = 0
 i = k + 1
 n = 3
@@ -26,7 +26,17 @@ while k < n:
         b[i] = b[i] - mult * b[k]
     k = k + 1
 
+for i in range(n - 1, -1, -1):
+    soma = 0
+    for j in range(i + 1, n):
+        soma -= (A[i][j] * x[i - 1]) / A[i][i]
+    soma += b[i] / A[i][i]
+    x.append(soma)
+
 for i in range(n):
     for j in range(n):
         print("%10.5f" % A[i][j], end="")
     print("%20.2f" % b[i])
+
+for i in range(n):
+    print("%10.2f" % x[i])
