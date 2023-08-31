@@ -1,9 +1,17 @@
-A = [[1, 1, 1], [-3.5, 2, 1], [1.5, 2, -1]]
+import copy
+
+A = [[1.0, -1.5, 1.5, 0.5], [-1.0, -4.5, 1.0, 2.0], [2.0, 1.0, 0.0, -3.0], [-2.0, 1.0, 1.5, 2.0]]
+B = copy.deepcopy(A)
 b = [1, 0, 0]
 x = []
 k = 0
 i = k + 1
-n = 3
+n = 4
+
+
+U = [[]for i in range(4)]
+L = [[]for i in range(4)]
+
 while k < n:
 
     maior = k
@@ -24,6 +32,8 @@ while k < n:
         for j in range(k, n):
             A[i][j] = A[i][j] - mult * A[k][j]
         b[i] = b[i] - mult * b[k]
+        U[i][j] = mult
+
     k = k + 1
 
 for i in range(n - 1, -1, -1):
@@ -40,3 +50,25 @@ for i in range(n):
 
 for i in range(n):
     print("%10.2f" % x[i])
+
+k = 1
+for j in range(0, n):
+    U[1][j] = A[1][j]
+for i in range(1, n):
+    L[i][1] = A[i][1] / U[1][1]
+
+for k in range(1, n - 1):
+    for j in range(k, n):
+        sj = 0.0
+        for ir in range(0, k - 1):
+            sj = sj + L[k][ir] * U[ir][j]
+        U[k][j] = A[k][j] - sj
+    for i in range(k, n):
+        si = 0.0
+        for ir in range(0, k):
+            si = si + L[i][ir] * U[ir][k]
+        L[k][j] = (A[i][k] - si)/U[k][k]
+    sj = 0
+    for ir in range(0, n):
+        sj = sj + L[n-1][ir] * U[ir][n-1]
+    U[n-1][n-1] = A[n-1][n-1] - sj
